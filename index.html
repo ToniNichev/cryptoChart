@@ -1,0 +1,112 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="open-chart/css/chartUI.css">
+  <link rel="stylesheet" type="text/css" href="./main.css">
+
+  <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <script>
+    ##!!CONFIG!!##
+    var symbols = globalConfig.symbols;
+  </script>
+
+
+  <script src="main.js"></script>    
+  <script src="open-chart/library/OpenCharts.js"></script>
+  <script src="open-chart/library/DateHelper.js"></script>
+  <script src="open-chart/library/ChartGrid.js"></script>
+  <script src="open-chart/library/ChartUI.js"></script>
+  <script src="open-chart/library/ChartDataConnector.js"></script>
+  <script src="open-chart/library/TransactionsMarker.js"></script>  
+</head>
+
+<body style="font-family:Arial, Helvetica, sans-serif">
+  <div class="header">
+    <div class='algorithm'>
+      <h2>Algorithum</h2>
+      <label>running:</label><span></span>
+      <label>filtered trend:</label><span></span>
+      <br>
+      <label>data points:</label>...<span></span>
+    </div>
+    <div class='wallet'>
+      <h2>Wallet</h2>
+      <label>funds $</label><span></span>
+      <label>shares:</label><span></span>
+      <br>
+      <label>test</label> <span></span>
+    </div>
+    <div class='actions'>
+      <h2>Actions</h2>
+      <button class='disable-buying'>disable buying</button>
+      <button class='disable-selling'>disable selling</button>
+      <br>
+      test <span></span>
+    </div>    
+  </div>
+
+    <script>
+      for(var c in symbols) {
+        let symbol = symbols[c];
+        document.write(`            
+          <div class='chartWrapper'>
+            <h1>${symbol}</h1>
+            <div class="chartContainer">
+              <canvas id="chartCanvas${c}" height=300 width=650></canvas>
+            </div> 
+          </div>
+          <div class="transactions-list">
+            <table>
+              <thead>
+                <tr>
+                   <th>TIME</th>                
+                   <th>ACTION</th>
+                   <th>SHARES</th>
+                   <th>SHARE'S PRICE</th>           
+                   <th>SPENT/GAINED</th>  
+                   <th>WALLET</th>     
+                   <th>TRADE ID</th>                                                  
+                </tr>
+              </thead>
+              <tbody class="transaction-list-body${c}">                
+              </tbody>
+            </table>
+          </div>
+          `); 
+      }
+    </script>
+
+<script>
+
+  var transactionsList = [];
+  var openCharts = [];
+
+  for(var c in symbols) {
+
+    transactionsList[c] = new TransactionList('transaction-list-body' + c);
+
+    // set up charts
+    var symbol = symbols[c];
+    openCharts[c] = new tjn.OpenCharts("chartCanvas"+c, {'lineWidth': '3',
+                                                     'lineColor': '#3DA5ED',
+                                                     'fillColor': '#31587D',
+                                                     'backgroundColor': '#020202',
+                                                     'priceArrow': { 'fillCollor': '#3DA5ED', 'priceColor': '#fffcfc'},
+                                                     'grid': {'lineWidth': 0.3, 'lineColor': '#A9A9A9', 'gridStep': 20.0},
+                                                    }, new tjn.ChatDataConnector()); // attach chart feed
+    openCharts[c].requestChartForTimeFrame(symbol[c], '1y', null, true, null);
+  }
+
+  let interval = setInterval(function() {
+    for(var c in symbols) {    
+      var symbol = symbols[c];      
+      openCharts[c].requestChartForTimeFrame(symbol, '1y', null, true, null);    
+    }    
+  }, 200);
+
+  headerDashboardDisplay.init();
+</script>
+</body>
+</html>

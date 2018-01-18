@@ -1,0 +1,19 @@
+{
+  "name": "basic",
+  "version": "1.0.0",
+  "description": "Basic trading algorithm example",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "trading",
+    "gdax"
+  ],
+  "author": "Toni Nichev",
+  "license": "ISC",
+  "dependencies": {
+    "gdax": "^0.4.2"
+  }
+}
