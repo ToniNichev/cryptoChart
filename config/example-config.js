@@ -1,3 +1,7 @@
+/**
+ * Rename this file to index.js and fill out yout GDAX credentials in account section
+ * @type {Object}
+ */
 let config = {
 
   symbols: ['ETH-USD'],
