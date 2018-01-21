@@ -88,14 +88,19 @@ headerDashboardDisplay = {
 
 	updateSystem: function(system) {
 		this.startTime = system.startTime;
+		const lastTradePrice = system.wallet.lastTradePrice;
+		const shares = system.wallet.shares;
+		const potentialGainLoss = lastTradePrice * shares;
 		// Algorithm
 		const trend = system.wallet.finalTrend=='UP' ? '<span class="up">&#x25B2</span>' : '<span class="down">&#x25BC;</span>';
 		$('body > div.header > div.algorithm > span:nth-child(5)').html(' ' + trend + ' ');		
 		// WALLET
-		$('body > div.header > div:nth-child(2) > span:nth-child(2)').html(' ' + system.wallet.funds.toFixed(4) + ' ');
-		$('body > div.header > div:nth-child(2) > span:nth-child(3)').html(' ' + system.wallet.shares.toFixed(4) + ' ');
-
-
+		$('.header > .wallet > .funds').html(' ' + system.wallet.funds.toFixed(4) + ' ');
+		$('.header > .wallet > .shares').html(' ' + shares.toFixed(4) + ' ');
+		if(typeof lastTradePrice != 'undefined') {
+			$('.header > .wallet > .lastPrice').html(' ' + lastTradePrice.toFixed(4) + ' ');
+			$('.header > .wallet > .gainLoss').html(' ' + potentialGainLoss.toFixed(4) + ' ');
+		}
 	}
 }
 

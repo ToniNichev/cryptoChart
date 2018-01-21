@@ -36,13 +36,13 @@ var algotrade = {
 				return;
 			}
 			lastDataPoint = last;
-			const sharePrice = _data[last].price;
+			const sharePrice = parseFloat(_data[last].price);
 			const shares = (moneyToBy / sharePrice);
 			const time = _data[last].tradeTime;
 
 			wallet.funds -= moneyToBy;
 			wallet.shares += shares;	
-			wallet.lastTradePrice = sharePrice;					
+			wallet.lastTradePrice = sharePrice;
 			allData[product_id][last].trade = {	action: 'buy', 
 												shares: shares, 
 												pricePerShare: sharePrice, 

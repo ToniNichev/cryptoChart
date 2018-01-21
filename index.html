@@ -8,6 +8,7 @@
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
   <script>
+    // inject frontend config from the server.js
     ##!!CONFIG!!##
     var symbols = globalConfig.symbols;
   </script>
@@ -33,10 +34,11 @@
     </div>
     <div class='wallet'>
       <h2>Wallet</h2>
-      <label>funds $</label><span></span>
-      <label>shares:</label><span></span>
+      <label>funds $</label><span class='funds'></span>
       <br>
-      <label>test</label> <span></span>
+      <label>shares:</label><span class='shares'></span>
+      <label>last price:</label><span class='lastPrice'></span>
+      <label>potential amaunt:</label><span class='gainLoss'></span>
     </div>
     <div class='actions'>
       <h2>Actions</h2>

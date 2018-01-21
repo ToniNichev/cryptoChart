@@ -105,11 +105,11 @@ TRANSACTION LIST
 }
 
 .transactions-list tbody .buy {
-	color: red;
+	color: #079ce8;
 }
 
 .transactions-list tbody .bought-and-sold {
-	color: #f57c5d;
+	color: #4f6671;
 }
 
 .transactions-list tbody .up {

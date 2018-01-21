@@ -111,7 +111,7 @@ http.createServer(function (req, res) {
   var html = '';
 
 
-  // servee static files
+  // serve static files
   if( url_parts.pathname.indexOf('.js') != -1 || 
       url_parts.pathname.indexOf('.css') != -1 || 
       url_parts.pathname.indexOf('.html') != -1 ||
@@ -131,9 +131,6 @@ http.createServer(function (req, res) {
           // if this is the index file, replace config marker with the actual config
           const _config = { symbols: config.symbols, ajaxUrl: config.ajaxUrl }
           dataText = dataText.split('##!!CONFIG!!##').join('const globalConfig = ' + JSON.stringify(_config) );
-
-        console.log(">>>>>>");
-        console.log(_config);
         }
         res.write(dataText);
         res.end();
@@ -152,6 +149,9 @@ http.createServer(function (req, res) {
         html += ',';
     }    
     html += "]},";
+    
+    // set last share price
+    wallet.sharePrice = '12234';
 
     // send trades
     html += '"trades":[';
