@@ -8,6 +8,6 @@
 5. Run npm start
 6. Open in the browser: http://localhost:1140/index.html
 
-#Optional 
+# Optional 
 
 Adjust the algorithm patterns in /config/index.js 'trentPatterns' set 'mockData.enable=true' and run acselerated simulation with historical data to see if you could make more profit! Good luck!
