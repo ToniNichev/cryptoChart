@@ -115,7 +115,7 @@ var algotrade = {
 				for(var c in pattern) {
 					var cursorPos = (trends_len - pattern_len) + parseInt(c);
 					if(pattern[c] == trends[cursorPos])
-						match ++;
+						match = match + 1;
 				}
 				if(match == pattern_len)
 					return PatternObj.action;
@@ -148,11 +148,11 @@ var algotrade = {
 				if(_data[c-1].price > _data[c].price  ) {
 					mover.trend --;
 				}
-				else if(_data[c-1].price == _data[c].price) {
+				else if(_data[c-2].price == _data[c].price) {
 					if(mover.trend != 0)
 						mover.trend += !mover.trend;
 				}
-				else if(_data[c-1].price < _data[c].price) {
+				else if(_data[c-2].price < _data[c].price) {
 					mover.trend ++;
 				}
 			}

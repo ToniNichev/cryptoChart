@@ -78,27 +78,23 @@ headerDashboardDisplay = {
 		    $.ajax({
 		      url: globalConfig.ajaxUrl + '?command=algorithm.buy.allowed=' + mode ,
 		    }).done(function(data) {
-		      //data = JSON.parse(data); 
-		      //var chartData = _formatChartData(data)
-		      //if(onComplete!=null)
-		      //  onComplete(chartData)
 		    });
 		});
 	},
 
 	updateSystem: function(system) {
 		this.startTime = system.startTime;
-		const lastTradePrice = system.wallet.lastTradePrice;
+		const sharePrice = system.wallet.sharePrice;
 		const shares = system.wallet.shares;
-		const potentialGainLoss = lastTradePrice * shares;
+		const potentialGainLoss = sharePrice * shares;
 		// Algorithm
 		const trend = system.wallet.finalTrend=='UP' ? '<span class="up">&#x25B2</span>' : '<span class="down">&#x25BC;</span>';
 		$('body > div.header > div.algorithm > span:nth-child(5)').html(' ' + trend + ' ');		
 		// WALLET
 		$('.header > .wallet > .funds').html(' ' + system.wallet.funds.toFixed(4) + ' ');
 		$('.header > .wallet > .shares').html(' ' + shares.toFixed(4) + ' ');
-		if(typeof lastTradePrice != 'undefined') {
-			$('.header > .wallet > .lastPrice').html(' ' + lastTradePrice.toFixed(4) + ' ');
+		if(typeof sharePrice != 'undefined') {
+			$('.header > .wallet > .lastPrice').html(' ' + sharePrice.toFixed(4) + ' ');
 			$('.header > .wallet > .gainLoss').html(' ' + potentialGainLoss.toFixed(4) + ' ');
 		}
 	}

@@ -151,7 +151,10 @@ http.createServer(function (req, res) {
     html += "]},";
     
     // set last share price
-    wallet.sharePrice = '12234';
+    if(typeof data != 'undefined' && data.length > 0) {
+      const last = data.length-1;
+      wallet.sharePrice = parseFloat(data[last].price);
+    }
 
     // send trades
     html += '"trades":[';
