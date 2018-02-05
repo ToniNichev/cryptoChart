@@ -11,3 +11,10 @@
 # Optional 
 
 Adjust the algorithm patterns in /config/index.js 'trentPatterns' set 'mockData.enable=true' and run acselerated simulation with historical data to see if you could make more profit! Good luck!
+
+# Good to know
+- If you want to cache out your money use 'disable buying' in the 'Actions' section on the top
+
+- In the dashboard 'Actions' these buttons action is not implemented yet and so it's not working 
+	'disable selling'
+	'cache out now'

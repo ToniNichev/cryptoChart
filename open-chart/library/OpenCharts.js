@@ -43,7 +43,12 @@ tjn.OpenCharts = function(CanvasId, _config, ChartDataConnector) {
   var _horizontalDragResidualSpeedTimer = null
   var chartGrid = new tjn.ChartGrid(drawingCanvas, config)
   var chartUI = new tjn.ChartUI(drawingCanvas, config)
+  // ====================================================
+  // DECLARE PLUG-INS HERE
+  // ====================================================
   var transactionsMarker = new tjn.TransactionsMarker(drawingCanvas, config)
+  var threndsDrawer = new tjn.ThrendsDrawer(drawingCanvas, config)
+  // ====================================================
   var chartDataConnector = ChartDataConnector               // the chart data feed
 
 
@@ -345,8 +350,14 @@ tjn.OpenCharts = function(CanvasId, _config, ChartDataConnector) {
                        max,           // max data value
                        price          // last price
     )
+    // ===========================================
+    // ADD PLUG-INS HERE
+    // ===========================================
+    if(typeof transactionsMarker != 'undefined')
+      transactionsMarker.drawTransactions(chartData, offset, min, max);
 
-    transactionsMarker.drawTransactions(chartData, offset, min, max);
+    if(typeof threndsDrawer != 'undefined')
+      threndsDrawer.drawThrends(chartData, offset, min, max);
 
     // call on draw complete function
     if(onDrawComplete!= null)

@@ -1,5 +1,5 @@
 body {
-  background: black;
+  background: #080808;
   color: white;
 }
 
@@ -14,10 +14,12 @@ body h1 {
 }
 
 .chartWrapper {
-	width: 50%;
-  	float:left;
+	float:left;
 }
 
+/* ****************************
+HEADER
+**************************** */
 .header {
 	border-bottom: 1px solid silver;
 	font-weight: normal;
@@ -25,7 +27,7 @@ body h1 {
 }
 
 .header label, .header h1 {
-	color: #55ce71;
+	color: #8c8b96;
 }
 
 .header > div {
@@ -51,28 +53,30 @@ div.header > div.algorithm > span .down {
 	color: red;
 }
 
+.header > .actions button {
+	width: 100px;
+}
+
+/* ****************************
+TRANSACTION LIST 
+**************************** */
+
 .transactions-list {
 	float:right;
 	border: 1px solid white;
 	max-height: 286px;
 	overflow: auto;
 	margin-top: 34px;
+	/* min-width: 630px; */
+	/* top: 0px; */
 }
 
-.chartContainer {
-	width: 100%;
-}
-
-
-/* ****************************
-TRANSACTION LIST 
-**************************** */
 .transactions-list table {
 }
 
 
 .transactions-list > table > thead > tr > th:nth-child(1) {
-	padding-left: 15px;
+	padding-left: 20px;
 	padding-right: 15px;
 }
 
@@ -81,6 +85,9 @@ TRANSACTION LIST
 	padding-right: 8px;	
 }
 
+.transactions-list > table > thead > tr > th:nth-child(5) {
+	padding-right: 10px;
+}
 
 .transactions-list thead {
 	position: fixed;

@@ -33,7 +33,8 @@ tjn.ChatDataConnector = function(config) {
     for(var dd=lastFormatedPoint;dd < chartData.length;dd ++) {
       var chartDataFormated = {
         "date"  : new Date(chartData[dd].tradeTime),
-        "close" : parseFloat(chartData[dd].price)
+        "close" : parseFloat(chartData[dd].price),
+        "trend": parseInt(chartData[dd].trend),
       }
       if(typeof chartData[dd].trade != 'undefined') {
         chartDataFormated.trade = chartData[dd].trade;

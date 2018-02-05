@@ -1,11 +1,12 @@
-const GDAX = require('gdax');
+//const GDAX = require('gdax');
 var http = require('http');
 var url = require('url');
 var fs = require('fs');
 var mockData = require('./mock-data.js');
 var algotrade = require('./algotrade/algotrade');
 const config = require('./config');
-
+const gdaxWrapper = require('./GDAX-wrapper/gdax-wrapper');
+const orderBookScanner = require('./algotrade/orderBookScanner');
 
 let startTime = new Date();
 
@@ -13,7 +14,7 @@ var symbols = config.symbols;
 
 var rawData = {};
 var allData = {};
-var wallet = {trades:[]}
+var wallet = {}
 
 for(var c in symbols) {
   var symbol = symbols[c];
@@ -21,43 +22,26 @@ for(var c in symbols) {
   allData[symbol] = [];
 }
 
-const authenticatedClient = new GDAX.AuthenticatedClient( config.account.apiKey, 
-                                                          config.account.base64secret, 
-                                                          config.account.passPhrase, 
-                                                          config.account.apiURI);
+//gdaxWrapper.getProducts();
+gdaxWrapper.attachOnMessageCallback(incommingData);
+
+//-0.00676669598
+
+//gdaxWrapper.placeBuyOrder(5, 2.12345, 'BTC-USD', function(data){
+//  console.log(data);
+//});
 
 
-algotrade.init(symbols, allData, 100);
+//gdaxWrapper.placeSellOrder(10322.01, 0.06076253, 'BTC-USD', function(data){
+//  console.log(data);
+//});
 
-const websocket = new GDAX.WebsocketClient(  
-  symbols,
-  config.account.wss,
-  {
-    key: config.account.apiKey,
-    secret: config.account.base64secret,
-    passphrase: config.account.passPhrase,
-  },
-  { heartbeat: true }
-);
 
-websocket.on('error', err => {
-  console.log("Error !");
-  console.log(err);
-});
-
-websocket.on('close', () => { 
-  console.log("Socket closed !");
-  console.log(err);
-});
-
-websocket.on('message', data => { 
-  if(!config.mockData.enable) {    
-    // ignore GDAX messages if mock data is enabled
-    incommingData(data);  
-  }
-});
+algotrade.init(symbols, allData);
+orderBookScanner.init(symbols, allData);
 
 if(config.mockData.enable) {
+  // generate mock data if enabled
   setInterval(function() {
     let dataPoint = mockData.getData(config.mockData.Url);
     if(typeof dataPoint != 'undefined') {
@@ -66,8 +50,15 @@ if(config.mockData.enable) {
   }, config.mockData.speed);
 }
 
-
+/**
+ * [incommingData GDAX data is comming up
+ * @param  {[type]} data [description]
+ * @return {[type]}      [description]
+ */
 function incommingData(data) {
+  //orderBookScanner.analyze(data);
+  //console.log(data);
+  //console.log("\n=======================\n")
   if (!(data.type === 'done' && data.reason === 'filled') || data.price === undefined )      
     return;
 
@@ -75,7 +66,8 @@ function incommingData(data) {
 
   let datapoint = {
     price: data.price,
-    tradeTime: dateStr
+    tradeTime: dateStr,
+    trend: 0
   }
 
   var productData = allData[data.product_id];
@@ -91,7 +83,9 @@ function incommingData(data) {
           allData[data.product_id].push(datapoint);   
           wallet = algotrade.analyze(data.product_id); 
         }else {
-          console.log("Price too different than the previous price!!!   price: " + datapoint.price);   
+          console.log("Price too different than the previous price!!!   price: " + datapoint.price + " previous: " + prevPrice);   
+          //allData[data.product_id].push(datapoint);   
+          //wallet = algotrade.analyze(data.product_id);           
         }
       }    
   }
@@ -100,7 +94,7 @@ function incommingData(data) {
   }  
 }
 
-
+console.log("Server is starting ...");
 
 //create a server object
 http.createServer(function (req, res) {
@@ -117,6 +111,14 @@ http.createServer(function (req, res) {
       url_parts.pathname.indexOf('.html') != -1 ||
       url_parts.pathname.indexOf('.txt') != -1) {
     filename = '.' + url_parts.pathname;
+    
+    if(filename.indexOf('config') != -1) {
+      // prevent showing the config file
+      res.writeHead(404, 'Not Found');
+      res.write('404: File Not Found!');
+      res.end();      
+      return;
+    }
 
     fs.readFile(filename, "utf8", function(err, dataText) {
         if (err) {
@@ -129,7 +131,7 @@ http.createServer(function (req, res) {
 
         if(url_parts.pathname == '/index.html') {
           // if this is the index file, replace config marker with the actual config
-          const _config = { symbols: config.symbols, ajaxUrl: config.ajaxUrl }
+          const _config = { symbols: config.symbols, ajaxUrl: config.ajaxUrl + ':' + config.serverPort, wallet: {init_amount: config.wallet.funds} }
           dataText = dataText.split('##!!CONFIG!!##').join('const globalConfig = ' + JSON.stringify(_config) );
         }
         res.write(dataText);
@@ -178,10 +180,8 @@ http.createServer(function (req, res) {
   // execute command
   else if(typeof query.command != 'undefined') {
     html = ">>" + query.command;
-    algotrade.command(query.command);
+    algotrade.command(query.command, query.product_id);
     res.write(html);
     res.end();    
   }
-
-
-}).listen(1140);
+}).listen(config.serverPort);

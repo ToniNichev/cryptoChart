@@ -5,6 +5,13 @@ function TransactionList(container) {
 	var lastTransactionEntered = 0;
 
 	function addTransaction(chartDataPoint) {
+
+		/*
+		const findTransactionById(id) {
+			for(let c in )
+		}
+		*/
+
 		const transaction = chartDataPoint.trade;
 		if(transaction.length < lastTransactionEntered)
 			return;
@@ -15,15 +22,19 @@ function TransactionList(container) {
 		const totalSpent = parseFloat(transaction.totalSpent).toFixed(4);
 		const wallet = parseFloat(transaction.moneyLeft).toFixed(4);
 		const timestamp = (new Date(chartDataPoint.date)).getHours() + ':' + (new Date(chartDataPoint.date)).getMinutes() + ':' + (new Date(chartDataPoint.date)).getSeconds();
-		const id = transaction.action == 'buy' ? transaction.id :  transaction.buyId ;
+		const id = transaction.id;
 
 		var trClass = '';
+
+		/*
 		if(action == 'sell') {
 			if(pricePerShare < lastBuyPrice) 
 				trClass += ' down';
 			else if(pricePerShare > lastBuyPrice) 
 				trClass += ' up';
 		}
+		*/
+
 
 		$('.' + container).append(`<tr class='${action} ${trClass}' id='transaction_${action}_id_${id}'> 
 										<td>${timestamp}</td>
@@ -33,7 +44,7 @@ function TransactionList(container) {
 										<td>$ ${totalSpent}</td>
 										<td>$ ${wallet}</td>
 										<td>${id}</td>
-								</tr>`)
+								  </tr>`)
 
 		if(action == 'buy')
 			lastBuyPrice = pricePerShare;		
@@ -65,21 +76,34 @@ headerDashboardDisplay = {
 			$('body > div.header > div.algorithm > span:nth-child(3)').html( ' ' + runingTime + ' sec.');
 		}, 1000);
 
-		$('.header > .actions > button.disable-buying').click(function(){
+		setButtonAction('.header > .actions > button.disable-buying', 'algorithm.buy.allowed', true);
+		setButtonAction('.header > .actions > button.disable-selling', 'algorithm.sell.allowed', true);
 
-			let mode = false;
-			if($('.header > .actions > button.disable-buying').hasClass('selected')) {
-				mode = true;
-				$('.header > .actions > button.disable-buying').removeClass('selected');
-			}
-			else {
-				$('.header > .actions > button.disable-buying').addClass('selected')
-			}
-		    $.ajax({
-		      url: globalConfig.ajaxUrl + '?command=algorithm.buy.allowed=' + mode ,
-		    }).done(function(data) {
-		    });
-		});
+		setButtonAction('.header > .actions > button.buy-now', 'buy-now', false);
+		setButtonAction('.header > .actions > button.sell-now', 'sell-now', false);
+
+
+		function setButtonAction(selector, command, switchButton) {
+			$(selector).click(function(){
+				let _url = globalConfig.ajaxUrl + '?product_id=' + symbols[0]  + '&command=' + command;
+				if(switchButton) {
+					let mode = false;
+					if($(selector).hasClass('selected')) {
+						mode = true;
+						$(selector).removeClass('selected');
+					}
+					else {
+						$(selector).addClass('selected')
+					}
+					_url = _url + '=' + mode;
+				}
+
+			    $.ajax({			    	
+			      	url: _url
+			    }).done(function(data) {
+			    });
+			});
+		}
 	},
 
 	updateSystem: function(system) {
@@ -91,11 +115,14 @@ headerDashboardDisplay = {
 		const trend = system.wallet.finalTrend=='UP' ? '<span class="up">&#x25B2</span>' : '<span class="down">&#x25BC;</span>';
 		$('body > div.header > div.algorithm > span:nth-child(5)').html(' ' + trend + ' ');		
 		// WALLET
-		$('.header > .wallet > .funds').html(' ' + system.wallet.funds.toFixed(4) + ' ');
-		$('.header > .wallet > .shares').html(' ' + shares.toFixed(4) + ' ');
-		if(typeof sharePrice != 'undefined') {
-			$('.header > .wallet > .lastPrice').html(' ' + sharePrice.toFixed(4) + ' ');
-			$('.header > .wallet > .gainLoss').html(' ' + potentialGainLoss.toFixed(4) + ' ');
+		if(typeof system.wallet != 'undefined') {
+			$('.header > .wallet > .init_amount').html(' ' + globalConfig.wallet.init_amount.toFixed(4) + ' ');
+			$('.header > .wallet > .funds').html(' ' + system.wallet.funds.toFixed(4) + ' ');
+			$('.header > .wallet > .shares').html(' ' + shares.toFixed(4) + ' ');
+			if(typeof sharePrice != 'undefined') {
+				$('.header > .wallet > .lastPrice').html(' ' + sharePrice.toFixed(4) + ' ');
+				$('.header > .wallet > .gainLoss').html(' ' + potentialGainLoss.toFixed(4) + ' ');
+			}
 		}
 	}
 }
