@@ -203,10 +203,10 @@ var algotrade = {
 
 			// FILTER TREND
 			for(var c=_data.length - config.algorithm.minDataPoints;c < _data.length; c++) {	
-				if(_data[c-1].price > _data[c].price + threshood && mover.trend > - 4  ) {
+				if(_data[c-1].price > _data[c].price + threshood && mover.trend > - 6  ) {
 					mover.trend --;
 				}
-				else if(_data[c-1].price < _data[c].price - threshood && mover.trend < 4) {
+				else if(_data[c-1].price < _data[c].price - threshood && mover.trend < 6) {
 					mover.trend ++;				
 				}
 
