@@ -1,0 +1,21 @@
+tjn-opencharts-time-intervals ul, tjn-opencharts-time-granularity ul {
+  list-style: none;
+  display: inline-block;
+  float: left;
+}
+
+tjn-opencharts-time-intervals ul {
+  float: right;
+}
+
+tjn-opencharts-time-intervals ul li, tjn-opencharts-time-granularity ul li {
+  display: inline-block;
+  cursor: pointer;
+  padding: 3px;
+  width:35px;
+}
+
+tjn-opencharts-time-intervals ul li:hover , tjn-opencharts-time-granularity ul li:hover {
+  background: blue;
+  color: white;
+}

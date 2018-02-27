@@ -1,0 +1,128 @@
+body {
+  background: #080808;
+  color: white;
+}
+
+body h1 {
+	font-size: 14px;
+}
+
+
+
+.chartContainer > canvas {
+	border: none;
+}
+
+.chartWrapper {
+	float:left;
+}
+
+/* ****************************
+HEADER
+**************************** */
+.header {
+	border-bottom: 1px solid silver;
+	font-weight: normal;
+	font-size: 12px;
+}
+
+.header label, .header h1 {
+	color: #f9e007;
+}
+
+.header > div {
+	display: inline-block;
+	padding-right:15px;
+}
+
+.header > div > h2 {
+	font-size: 16px;
+	font-weight: normal;
+	height: 25px;
+}
+
+.header .selected {
+	background: #e65f5f;
+}
+
+div.header > div.algorithm > span .up {
+	color: green;
+}
+
+div.header > div.algorithm > span .down {
+	color: red;
+}
+
+.header > .actions button {
+	width: 100px;
+}
+
+/* ****************************
+TRANSACTION LIST 
+**************************** */
+
+.transactions-list {
+	float: left;
+	border: 1px solid white;
+	max-height: 286px;
+	overflow: auto;
+	margin-top: 34px;
+	/* min-width: 630px; */
+	/* top: 0px; */
+}
+
+.transactions-list table {
+}
+
+
+.transactions-list > table > thead > tr > th:nth-child(1) {
+	padding-left: 20px;
+	padding-right: 15px;
+}
+
+.transactions-list > table > thead > tr > th:nth-child(3) {
+	padding-left: 8px;
+	padding-right: 8px;	
+}
+
+.transactions-list > table > thead > tr > th:nth-child(5) {
+	padding-right: 10px;
+}
+
+.transactions-list thead {
+	position: fixed;
+	background: black;
+}
+
+.transactions-list thead, .transactions-list tbody {
+	font-size: 10px;
+	font-weight: normal;
+	width: 900px;
+	margin-top: -20px;
+	/* margin-bottom: 10px; */
+}
+
+ .transactions-list tbody td {
+ 	padding-left: 11px;
+	padding-right: 11px;
+ }
+
+.transactions-list tbody .sell {
+	color: #45f709;
+}
+
+.transactions-list tbody .buy {
+	color: #079ce8;
+}
+
+.transactions-list tbody .bought-and-sold {
+	color: #4f6671;
+}
+
+.transactions-list tbody .up {
+	background: #083e08;
+}
+
+.transactions-list tbody .down {
+	background: #580808;
+}
