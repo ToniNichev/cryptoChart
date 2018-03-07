@@ -8,22 +8,17 @@ let algoConfig = {
     buy: [
       {
         name:'one',
-        pattern: [-1,-1,-1,-1,-1,0],        
-        matchRate: 90 // %
+        pattern: [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],        
+        matchRate: 100 // %
       },                      
     ],
 
     sell: [
       {
         name:'one',
-        pattern: [0,0,0,0,0,1,1,1,1],
+        pattern: [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0],
         matchRate: 90
-      },
-      {
-        name:'two',
-        pattern: [0,1,1,1,1,1,1],
-        matchRate: 90
-      },      
+      },     
     ]
   },
 }

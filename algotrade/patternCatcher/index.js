@@ -27,7 +27,8 @@ const patternCatcher = {
 
 			let last = _data.length - 1;
 			var mover = {
-				trend: 0
+				trend: 0,
+				tempTrend: 0
 			}
 
 			let threshood = algoConfig.minThreshoodToRegisterTrend;
@@ -35,13 +36,20 @@ const patternCatcher = {
 
 			// draw the trend
 			for(var c=_data.length - algoConfig.minDataPoints;c < _data.length; c++) {
-				if(_data[c-1].price > _data[c].price + threshood && mover.trend > - 1  ) {
-					mover.trend --;
+				if(_data[c-1].price > _data[c].price + threshood && mover.tempTrend > - 2) {
+					mover.tempTrend --;
 				}
-				else if(_data[c-1].price < _data[c].price - threshood && mover.trend < 1) {
-					mover.trend ++;
+				else if(_data[c-1].price < _data[c].price - threshood && mover.tempTrend < 2) {
+					mover.tempTrend ++;
 				}
 			}
+
+			if(mover.tempTrend < 0) {
+				mover.trend = -1;
+			}
+			else if(mover.tempTrend > 0) {
+				mover.trend = 1;
+			}			
       _data[c-1].trends = _data[c-1].trends || {};
 			_data[c-1].trends.patternCatcher = mover.trend;
 			console.log(_data[c-1].trends.patternCatcher);
